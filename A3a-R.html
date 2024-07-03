@@ -1,0 +1,463 @@
+<html>
+
+<head>
+<style type="text/css">
+.inline {
+  background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+	font-weight: bold;
+	color: #FF0000;
+}
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .output, .warning, .error, .message {
+	padding: 0 1em;
+  border:solid 1px #F7F7F7;
+}
+.source {
+  background-color: #f5f5f5;
+}
+.left {
+  text-align: left;
+}
+.right {
+  text-align: right;
+}
+.center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}
+</style>
+<title>Title</title>
+</head>
+
+<body>
+
+<p>This is an R HTML document. When you click the <b>Knit HTML</b> button a web page will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
+
+<div class="chunk" id="unnamed-chunk-1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl com">#Install packages</span>
+<span class="hl kwd">install.packages</span><span class="hl std">(</span><span class="hl str">&quot;caret&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="message"><pre class="knitr r">## Installing package into 'C:/Users/Ferah Shan/AppData/Local/R/win-library/4.3'
+## (as 'lib' is unspecified)
+</pre></div>
+<div class="error"><pre class="knitr r">## Error in contrib.url(repos, &quot;source&quot;): trying to use CRAN without setting a mirror
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">install.packages</span><span class="hl std">(</span><span class="hl str">&quot;rpart.plot&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="message"><pre class="knitr r">## Installing package into 'C:/Users/Ferah Shan/AppData/Local/R/win-library/4.3'
+## (as 'lib' is unspecified)
+</pre></div>
+<div class="error"><pre class="knitr r">## Error in contrib.url(repos, &quot;source&quot;): trying to use CRAN without setting a mirror
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">install.packages</span><span class="hl std">(</span><span class="hl str">&quot;glmnet&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="message"><pre class="knitr r">## Installing package into 'C:/Users/Ferah Shan/AppData/Local/R/win-library/4.3'
+## (as 'lib' is unspecified)
+</pre></div>
+<div class="error"><pre class="knitr r">## Error in contrib.url(repos, &quot;source&quot;): trying to use CRAN without setting a mirror
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># Load necessary libraries</span>
+<span class="hl kwd">library</span><span class="hl std">(caret)</span>
+</pre></div>
+<div class="warning"><pre class="knitr r">## Warning: package 'caret' was built under R version 4.3.3
+</pre></div>
+<div class="message"><pre class="knitr r">## Loading required package: ggplot2
+</pre></div>
+<div class="warning"><pre class="knitr r">## Warning: package 'ggplot2' was built under R version 4.3.3
+</pre></div>
+<div class="message"><pre class="knitr r">## Loading required package: lattice
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">library</span><span class="hl std">(pROC)</span>
+</pre></div>
+<div class="warning"><pre class="knitr r">## Warning: package 'pROC' was built under R version 4.3.3
+</pre></div>
+<div class="message"><pre class="knitr r">## Type 'citation(&quot;pROC&quot;)' for a citation.
+</pre></div>
+<div class="message"><pre class="knitr r">## 
+## Attaching package: 'pROC'
+</pre></div>
+<div class="message"><pre class="knitr r">## The following objects are masked from 'package:stats':
+## 
+##     cov, smooth, var
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">library</span><span class="hl std">(rpart)</span>
+<span class="hl kwd">library</span><span class="hl std">(rpart.plot)</span>
+</pre></div>
+<div class="warning"><pre class="knitr r">## Warning: package 'rpart.plot' was built under R version 4.3.3
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">library</span><span class="hl std">(glmnet)</span>  <span class="hl com"># For regularization</span>
+</pre></div>
+<div class="warning"><pre class="knitr r">## Warning: package 'glmnet' was built under R version 4.3.3
+</pre></div>
+<div class="message"><pre class="knitr r">## Loading required package: Matrix
+</pre></div>
+<div class="message"><pre class="knitr r">## Loaded glmnet 4.1-8
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># Load your dataset</span>
+<span class="hl std">df</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">read.csv</span><span class="hl std">(</span><span class="hl str">&quot;C:\\Users\\Ferah Shan\\Downloads\\kidney_disease.csv&quot;</span><span class="hl std">)</span>
+
+<span class="hl com"># Display the first few rows of the dataset</span>
+<span class="hl kwd">print</span><span class="hl std">(</span><span class="hl kwd">head</span><span class="hl std">(df))</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##   X age bp    sg al su    rbc       pc        pcc         ba bgr bu  sc sod pot
+## 1 0  48 80 1.020  1  0          normal notpresent notpresent 121 36 1.2  NA  NA
+## 2 1   7 50 1.020  4  0          normal notpresent notpresent  NA 18 0.8  NA  NA
+## 3 2  62 80 1.010  2  3 normal   normal notpresent notpresent 423 53 1.8  NA  NA
+## 4 3  48 70 1.005  4  0 normal abnormal    present notpresent 117 56 3.8 111 2.5
+## 5 4  51 80 1.010  2  0 normal   normal notpresent notpresent 106 26 1.4  NA  NA
+## 6 5  60 90 1.015  3  0                 notpresent notpresent  74 25 1.1 142 3.2
+##   hemo pcv wbcc rbcc htn  dm cad appet  pe ane class
+## 1 15.4  44 7800  5.2 yes yes  no  good  no  no   ckd
+## 2 11.3  38 6000   NA  no  no  no  good  no  no   ckd
+## 3  9.6  31 7500   NA  no yes  no  poor  no yes   ckd
+## 4 11.2  32 6700  3.9 yes  no  no  poor yes yes   ckd
+## 5 11.6  35 7300  4.6  no  no  no  good  no  no   ckd
+## 6 12.2  39 7800  4.4 yes yes  no  good yes  no   ckd
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># Summary statistics of the dataset</span>
+<span class="hl kwd">print</span><span class="hl std">(</span><span class="hl kwd">summary</span><span class="hl std">(df))</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##        X               age              bp               sg       
+##  Min.   :  0.00   Min.   : 2.00   Min.   : 50.00   Min.   :1.005  
+##  1st Qu.: 99.75   1st Qu.:42.00   1st Qu.: 70.00   1st Qu.:1.010  
+##  Median :199.50   Median :55.00   Median : 80.00   Median :1.020  
+##  Mean   :199.50   Mean   :51.48   Mean   : 76.47   Mean   :1.017  
+##  3rd Qu.:299.25   3rd Qu.:64.50   3rd Qu.: 80.00   3rd Qu.:1.020  
+##  Max.   :399.00   Max.   :90.00   Max.   :180.00   Max.   :1.025  
+##                   NA's   :9       NA's   :12       NA's   :47     
+##        al              su             rbc                 pc           
+##  Min.   :0.000   Min.   :0.0000   Length:400         Length:400        
+##  1st Qu.:0.000   1st Qu.:0.0000   Class :character   Class :character  
+##  Median :0.000   Median :0.0000   Mode  :character   Mode  :character  
+##  Mean   :1.017   Mean   :0.4501                                        
+##  3rd Qu.:2.000   3rd Qu.:0.0000                                        
+##  Max.   :5.000   Max.   :5.0000                                        
+##  NA's   :46      NA's   :49                                            
+##      pcc                 ba                 bgr            bu        
+##  Length:400         Length:400         Min.   : 22   Min.   :  1.50  
+##  Class :character   Class :character   1st Qu.: 99   1st Qu.: 27.00  
+##  Mode  :character   Mode  :character   Median :121   Median : 42.00  
+##                                        Mean   :148   Mean   : 57.43  
+##                                        3rd Qu.:163   3rd Qu.: 66.00  
+##                                        Max.   :490   Max.   :391.00  
+##                                        NA's   :44    NA's   :19      
+##        sc              sod             pot              hemo      
+##  Min.   : 0.400   Min.   :  4.5   Min.   : 2.500   Min.   : 3.10  
+##  1st Qu.: 0.900   1st Qu.:135.0   1st Qu.: 3.800   1st Qu.:10.30  
+##  Median : 1.300   Median :138.0   Median : 4.400   Median :12.65  
+##  Mean   : 3.072   Mean   :137.5   Mean   : 4.627   Mean   :12.53  
+##  3rd Qu.: 2.800   3rd Qu.:142.0   3rd Qu.: 4.900   3rd Qu.:15.00  
+##  Max.   :76.000   Max.   :163.0   Max.   :47.000   Max.   :17.80  
+##  NA's   :17       NA's   :87      NA's   :88       NA's   :52     
+##       pcv             wbcc            rbcc           htn           
+##  Min.   : 9.00   Min.   : 2200   Min.   :2.100   Length:400        
+##  1st Qu.:32.00   1st Qu.: 6500   1st Qu.:3.900   Class :character  
+##  Median :40.00   Median : 8000   Median :4.800   Mode  :character  
+##  Mean   :38.88   Mean   : 8406   Mean   :4.707                     
+##  3rd Qu.:45.00   3rd Qu.: 9800   3rd Qu.:5.400                     
+##  Max.   :54.00   Max.   :26400   Max.   :8.000                     
+##  NA's   :71      NA's   :106     NA's   :131                       
+##       dm                cad               appet                pe           
+##  Length:400         Length:400         Length:400         Length:400        
+##  Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##                                                                             
+##                                                                             
+##                                                                             
+##                                                                             
+##      ane               class          
+##  Length:400         Length:400        
+##  Class :character   Class :character  
+##  Mode  :character   Mode  :character  
+##                                       
+##                                       
+##                                       
+## 
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># Check for missing values</span>
+<span class="hl kwd">cat</span><span class="hl std">(</span><span class="hl str">&quot;Total missing values: &quot;</span><span class="hl std">,</span> <span class="hl kwd">sum</span><span class="hl std">(</span><span class="hl kwd">is.na</span><span class="hl std">(df)),</span> <span class="hl str">&quot;\n&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## Total missing values:  778
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># Custom function to calculate mode</span>
+<span class="hl std">mode_function</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">) {</span>
+  <span class="hl std">uniq_x</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">unique</span><span class="hl std">(x)</span>
+  <span class="hl std">uniq_x[</span><span class="hl kwd">which.max</span><span class="hl std">(</span><span class="hl kwd">tabulate</span><span class="hl std">(</span><span class="hl kwd">match</span><span class="hl std">(x, uniq_x)))]</span>
+<span class="hl std">}</span>
+
+<span class="hl com"># Function to impute missing values</span>
+<span class="hl std">impute_missing_values</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">df</span><span class="hl std">) {</span>
+  <span class="hl kwa">for</span> <span class="hl std">(col</span> <span class="hl kwa">in</span> <span class="hl kwd">names</span><span class="hl std">(df)) {</span>
+    <span class="hl kwa">if</span> <span class="hl std">(</span><span class="hl kwd">is.numeric</span><span class="hl std">(df[[col]])) {</span>
+      <span class="hl std">df[[col]][</span><span class="hl kwd">is.na</span><span class="hl std">(df[[col]])]</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">median</span><span class="hl std">(df[[col]],</span> <span class="hl kwc">na.rm</span> <span class="hl std">=</span> <span class="hl num">TRUE</span><span class="hl std">)</span>
+    <span class="hl std">}</span> <span class="hl kwa">else</span> <span class="hl std">{</span>
+      <span class="hl std">df[[col]][</span><span class="hl kwd">is.na</span><span class="hl std">(df[[col]])]</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">mode_function</span><span class="hl std">(df[[col]][</span><span class="hl opt">!</span><span class="hl kwd">is.na</span><span class="hl std">(df[[col]])])</span>
+    <span class="hl std">}</span>
+  <span class="hl std">}</span>
+  <span class="hl kwd">return</span><span class="hl std">(df)</span>
+<span class="hl std">}</span>
+
+<span class="hl com"># Impute missing values</span>
+<span class="hl std">df</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">impute_missing_values</span><span class="hl std">(df)</span>
+
+<span class="hl com"># Verify there are no more missing values</span>
+<span class="hl kwd">cat</span><span class="hl std">(</span><span class="hl str">&quot;Total missing values after imputation: &quot;</span><span class="hl std">,</span> <span class="hl kwd">sum</span><span class="hl std">(</span><span class="hl kwd">is.na</span><span class="hl std">(df)),</span> <span class="hl str">&quot;\n&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## Total missing values after imputation:  0
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># Ensure the target variable is a factor with exactly two levels</span>
+<span class="hl std">df</span><span class="hl opt">$</span><span class="hl std">class</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">as.factor</span><span class="hl std">(df</span><span class="hl opt">$</span><span class="hl std">class)</span>
+
+<span class="hl com"># Convert target variable to numeric (1 for &quot;ckd&quot; and 0 for &quot;notckd&quot;)</span>
+<span class="hl std">df</span><span class="hl opt">$</span><span class="hl std">class</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">ifelse</span><span class="hl std">(df</span><span class="hl opt">$</span><span class="hl std">class</span> <span class="hl opt">==</span> <span class="hl str">&quot;ckd&quot;</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">)</span>
+
+<span class="hl com"># Feature scaling</span>
+<span class="hl std">preProc</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">preProcess</span><span class="hl std">(df[,</span> <span class="hl opt">-</span><span class="hl kwd">which</span><span class="hl std">(</span><span class="hl kwd">names</span><span class="hl std">(df)</span> <span class="hl opt">==</span> <span class="hl str">&quot;class&quot;</span><span class="hl std">)],</span> <span class="hl kwc">method</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;center&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;scale&quot;</span><span class="hl std">))</span>
+<span class="hl std">scaled_data</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">predict</span><span class="hl std">(preProc, df[,</span> <span class="hl opt">-</span><span class="hl kwd">which</span><span class="hl std">(</span><span class="hl kwd">names</span><span class="hl std">(df)</span> <span class="hl opt">==</span> <span class="hl str">&quot;class&quot;</span><span class="hl std">)])</span>
+<span class="hl std">df_scaled</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">cbind</span><span class="hl std">(scaled_data,</span> <span class="hl kwc">class</span> <span class="hl std">= df</span><span class="hl opt">$</span><span class="hl std">class)</span>
+
+<span class="hl com"># Split the data into training and testing sets</span>
+<span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">123</span><span class="hl std">)</span>
+<span class="hl std">trainIndex</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">createDataPartition</span><span class="hl std">(df_scaled</span><span class="hl opt">$</span><span class="hl std">class,</span> <span class="hl kwc">p</span> <span class="hl std">=</span> <span class="hl num">0.7</span><span class="hl std">,</span> <span class="hl kwc">list</span> <span class="hl std">=</span> <span class="hl num">FALSE</span><span class="hl std">)</span>
+<span class="hl std">trainData</span> <span class="hl kwb">&lt;-</span> <span class="hl std">df_scaled[trainIndex,]</span>
+<span class="hl std">testData</span> <span class="hl kwb">&lt;-</span> <span class="hl std">df_scaled[</span><span class="hl opt">-</span><span class="hl std">trainIndex,]</span>
+
+<span class="hl com"># Check the distribution of the target variable in training and testing sets</span>
+<span class="hl kwd">cat</span><span class="hl std">(</span><span class="hl str">&quot;Training set distribution:\n&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## Training set distribution:
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">print</span><span class="hl std">(</span><span class="hl kwd">table</span><span class="hl std">(trainData</span><span class="hl opt">$</span><span class="hl std">class))</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## 
+##   0   1 
+## 111 169
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">cat</span><span class="hl std">(</span><span class="hl str">&quot;Testing set distribution:\n&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## Testing set distribution:
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">print</span><span class="hl std">(</span><span class="hl kwd">table</span><span class="hl std">(testData</span><span class="hl opt">$</span><span class="hl std">class))</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## 
+##  0  1 
+## 41 79
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># Prepare data for glmnet (regularized logistic regression)</span>
+<span class="hl std">x_train</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">as.matrix</span><span class="hl std">(trainData[,</span> <span class="hl opt">-</span><span class="hl kwd">which</span><span class="hl std">(</span><span class="hl kwd">names</span><span class="hl std">(trainData)</span> <span class="hl opt">==</span> <span class="hl str">&quot;class&quot;</span><span class="hl std">)])</span>
+<span class="hl std">x_test</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">as.matrix</span><span class="hl std">(testData[,</span> <span class="hl opt">-</span><span class="hl kwd">which</span><span class="hl std">(</span><span class="hl kwd">names</span><span class="hl std">(testData)</span> <span class="hl opt">==</span> <span class="hl str">&quot;class&quot;</span><span class="hl std">)])</span>
+
+<span class="hl std">y_train</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">as.numeric</span><span class="hl std">(trainData</span><span class="hl opt">$</span><span class="hl std">class)</span>
+<span class="hl std">y_test</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">as.numeric</span><span class="hl std">(testData</span><span class="hl opt">$</span><span class="hl std">class)</span>
+
+<span class="hl com"># Ensure all features are numeric in x_train</span>
+<span class="hl std">non_numeric_columns</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">colnames</span><span class="hl std">(trainData)[</span><span class="hl opt">!</span><span class="hl kwd">sapply</span><span class="hl std">(trainData, is.numeric)]</span>
+<span class="hl kwd">cat</span><span class="hl std">(</span><span class="hl str">&quot;Non-numeric columns in trainData: &quot;</span><span class="hl std">, non_numeric_columns,</span> <span class="hl str">&quot;\n&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## Non-numeric columns in trainData:  rbc pc pcc ba htn dm cad appet pe ane
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># If there are non-numeric columns, convert them to numeric</span>
+<span class="hl kwa">for</span> <span class="hl std">(col</span> <span class="hl kwa">in</span> <span class="hl std">non_numeric_columns) {</span>
+  <span class="hl kwd">suppressWarnings</span><span class="hl std">({</span>
+    <span class="hl std">trainData[[col]]</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">as.numeric</span><span class="hl std">(</span><span class="hl kwd">as.character</span><span class="hl std">(trainData[[col]]))</span>
+    <span class="hl std">testData[[col]]</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">as.numeric</span><span class="hl std">(</span><span class="hl kwd">as.character</span><span class="hl std">(testData[[col]]))</span>
+  <span class="hl std">})</span>
+<span class="hl std">}</span>
+
+<span class="hl com"># Re-prepare the matrices after conversion</span>
+<span class="hl std">x_train</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">as.matrix</span><span class="hl std">(trainData[,</span> <span class="hl opt">-</span><span class="hl kwd">which</span><span class="hl std">(</span><span class="hl kwd">names</span><span class="hl std">(trainData)</span> <span class="hl opt">==</span> <span class="hl str">&quot;class&quot;</span><span class="hl std">)])</span>
+<span class="hl std">x_test</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">as.matrix</span><span class="hl std">(testData[,</span> <span class="hl opt">-</span><span class="hl kwd">which</span><span class="hl std">(</span><span class="hl kwd">names</span><span class="hl std">(testData)</span> <span class="hl opt">==</span> <span class="hl str">&quot;class&quot;</span><span class="hl std">)])</span>
+
+<span class="hl com"># Check for NA values in the matrices and vectors</span>
+<span class="hl kwd">cat</span><span class="hl std">(</span><span class="hl str">&quot;Any NA in x_train after conversion: &quot;</span><span class="hl std">,</span> <span class="hl kwd">any</span><span class="hl std">(</span><span class="hl kwd">is.na</span><span class="hl std">(x_train)),</span> <span class="hl str">&quot;\n&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## Any NA in x_train after conversion:  TRUE
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">cat</span><span class="hl std">(</span><span class="hl str">&quot;Any NA in x_test after conversion: &quot;</span><span class="hl std">,</span> <span class="hl kwd">any</span><span class="hl std">(</span><span class="hl kwd">is.na</span><span class="hl std">(x_test)),</span> <span class="hl str">&quot;\n&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## Any NA in x_test after conversion:  TRUE
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># If there are still missing values, use makeX() to impute them</span>
+<span class="hl std">x_train[</span><span class="hl kwd">is.na</span><span class="hl std">(x_train)]</span> <span class="hl kwb">&lt;-</span> <span class="hl num">0</span>
+<span class="hl std">x_test[</span><span class="hl kwd">is.na</span><span class="hl std">(x_test)]</span> <span class="hl kwb">&lt;-</span> <span class="hl num">0</span>
+
+<span class="hl com"># Logistic Regression Model with Regularization</span>
+<span class="hl std">log_model</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">glmnet</span><span class="hl std">(x_train, y_train,</span> <span class="hl kwc">family</span> <span class="hl std">=</span> <span class="hl str">&quot;binomial&quot;</span><span class="hl std">)</span>
+
+<span class="hl com"># Cross-validation to select the best lambda</span>
+<span class="hl std">cv_log_model</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">cv.glmnet</span><span class="hl std">(x_train, y_train,</span> <span class="hl kwc">family</span> <span class="hl std">=</span> <span class="hl str">&quot;binomial&quot;</span><span class="hl std">)</span>
+
+<span class="hl com"># Predict on the test set using the best lambda</span>
+<span class="hl std">log_pred</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">predict</span><span class="hl std">(cv_log_model,</span> <span class="hl kwc">newx</span> <span class="hl std">= x_test,</span> <span class="hl kwc">s</span> <span class="hl std">=</span> <span class="hl str">&quot;lambda.min&quot;</span><span class="hl std">,</span> <span class="hl kwc">type</span> <span class="hl std">=</span> <span class="hl str">&quot;response&quot;</span><span class="hl std">)</span>
+<span class="hl std">log_pred</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">as.vector</span><span class="hl std">(log_pred)</span>  <span class="hl com"># Ensure log_pred is a numeric vector</span>
+<span class="hl std">log_pred_class</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">ifelse</span><span class="hl std">(log_pred</span> <span class="hl opt">&gt;</span> <span class="hl num">0.5</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">)</span>
+
+<span class="hl com"># Confusion Matrix for Logistic Regression</span>
+<span class="hl std">log_conf_matrix</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">confusionMatrix</span><span class="hl std">(</span><span class="hl kwd">as.factor</span><span class="hl std">(log_pred_class),</span> <span class="hl kwd">as.factor</span><span class="hl std">(y_test))</span>
+<span class="hl kwd">cat</span><span class="hl std">(</span><span class="hl str">&quot;Confusion Matrix for Logistic Regression:\n&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## Confusion Matrix for Logistic Regression:
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">print</span><span class="hl std">(log_conf_matrix)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction  0  1
+##          0 40  0
+##          1  1 79
+##                                           
+##                Accuracy : 0.9917          
+##                  95% CI : (0.9544, 0.9998)
+##     No Information Rate : 0.6583          
+##     P-Value [Acc &gt; NIR] : &lt;2e-16          
+##                                           
+##                   Kappa : 0.9814          
+##                                           
+##  Mcnemar's Test P-Value : 1               
+##                                           
+##             Sensitivity : 0.9756          
+##             Specificity : 1.0000          
+##          Pos Pred Value : 1.0000          
+##          Neg Pred Value : 0.9875          
+##              Prevalence : 0.3417          
+##          Detection Rate : 0.3333          
+##    Detection Prevalence : 0.3333          
+##       Balanced Accuracy : 0.9878          
+##                                           
+##        'Positive' Class : 0               
+## 
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># ROC Curve for Logistic Regression</span>
+<span class="hl std">roc_log</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">roc</span><span class="hl std">(y_test, log_pred)</span>
+</pre></div>
+<div class="message"><pre class="knitr r">## Setting levels: control = 0, case = 1
+</pre></div>
+<div class="message"><pre class="knitr r">## Setting direction: controls &lt; cases
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">plot</span><span class="hl std">(roc_log,</span> <span class="hl kwc">main</span> <span class="hl std">=</span> <span class="hl str">&quot;ROC Curve for Logistic Regression&quot;</span><span class="hl std">,</span> <span class="hl kwc">col</span> <span class="hl std">=</span> <span class="hl str">&quot;black&quot;</span><span class="hl std">)</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-1-1.png" alt="plot of chunk unnamed-chunk-1" class="plot" /></div><div class="rcode">
+<div class="source"><pre class="knitr r"><span class="hl kwd">cat</span><span class="hl std">(</span><span class="hl str">&quot;AUC for Logistic Regression: &quot;</span><span class="hl std">,</span> <span class="hl kwd">auc</span><span class="hl std">(roc_log),</span> <span class="hl str">&quot;\n&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## AUC for Logistic Regression:  0.9805496
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># Decision Tree Model</span>
+<span class="hl std">tree_model</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">rpart</span><span class="hl std">(class</span> <span class="hl opt">~</span> <span class="hl std">.,</span> <span class="hl kwc">data</span> <span class="hl std">= trainData,</span> <span class="hl kwc">method</span> <span class="hl std">=</span> <span class="hl str">&quot;class&quot;</span><span class="hl std">)</span>
+
+<span class="hl com"># Plot Decision Tree</span>
+<span class="hl kwd">rpart.plot</span><span class="hl std">(tree_model)</span>
+
+<span class="hl com"># Predict on the test set using Decision Tree</span>
+<span class="hl std">tree_pred</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">predict</span><span class="hl std">(tree_model,</span> <span class="hl kwc">newdata</span> <span class="hl std">= testData,</span> <span class="hl kwc">type</span> <span class="hl std">=</span> <span class="hl str">&quot;class&quot;</span><span class="hl std">)</span>
+<span class="hl std">tree_pred_prob</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">predict</span><span class="hl std">(tree_model,</span> <span class="hl kwc">newdata</span> <span class="hl std">= testData,</span> <span class="hl kwc">type</span> <span class="hl std">=</span> <span class="hl str">&quot;prob&quot;</span><span class="hl std">)[,</span> <span class="hl num">2</span><span class="hl std">]</span>
+
+<span class="hl com"># Confusion Matrix for Decision Tree</span>
+<span class="hl std">tree_conf_matrix</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">confusionMatrix</span><span class="hl std">(tree_pred,</span> <span class="hl kwd">as.factor</span><span class="hl std">(y_test))</span>
+<span class="hl kwd">cat</span><span class="hl std">(</span><span class="hl str">&quot;Confusion Matrix for Decision Tree:\n&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## Confusion Matrix for Decision Tree:
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">print</span><span class="hl std">(tree_conf_matrix)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction  0  1
+##          0 40  0
+##          1  1 79
+##                                           
+##                Accuracy : 0.9917          
+##                  95% CI : (0.9544, 0.9998)
+##     No Information Rate : 0.6583          
+##     P-Value [Acc &gt; NIR] : &lt;2e-16          
+##                                           
+##                   Kappa : 0.9814          
+##                                           
+##  Mcnemar's Test P-Value : 1               
+##                                           
+##             Sensitivity : 0.9756          
+##             Specificity : 1.0000          
+##          Pos Pred Value : 1.0000          
+##          Neg Pred Value : 0.9875          
+##              Prevalence : 0.3417          
+##          Detection Rate : 0.3333          
+##    Detection Prevalence : 0.3333          
+##       Balanced Accuracy : 0.9878          
+##                                           
+##        'Positive' Class : 0               
+## 
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># ROC Curve for Decision Tree</span>
+<span class="hl std">roc_tree</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">roc</span><span class="hl std">(y_test, tree_pred_prob)</span>
+</pre></div>
+<div class="message"><pre class="knitr r">## Setting levels: control = 0, case = 1
+## Setting direction: controls &lt; cases
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">plot</span><span class="hl std">(roc_tree,</span> <span class="hl kwc">col</span> <span class="hl std">=</span> <span class="hl str">&quot;red&quot;</span><span class="hl std">,</span> <span class="hl kwc">add</span> <span class="hl std">=</span> <span class="hl num">TRUE</span><span class="hl std">)</span>
+<span class="hl kwd">legend</span><span class="hl std">(</span><span class="hl str">&quot;bottomright&quot;</span><span class="hl std">,</span> <span class="hl kwc">legend</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;Logistic Regression&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Decision Tree&quot;</span><span class="hl std">),</span> <span class="hl kwc">col</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;black&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;red&quot;</span><span class="hl std">),</span> <span class="hl kwc">lwd</span> <span class="hl std">=</span> <span class="hl num">2</span><span class="hl std">)</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-1-2.png" alt="plot of chunk unnamed-chunk-1" class="plot" /></div><div class="rcode">
+<div class="source"><pre class="knitr r"><span class="hl kwd">cat</span><span class="hl std">(</span><span class="hl str">&quot;AUC for Decision Tree: &quot;</span><span class="hl std">,</span> <span class="hl kwd">auc</span><span class="hl std">(roc_tree),</span> <span class="hl str">&quot;\n&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## AUC for Decision Tree:  0.9878049
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># Compare Models</span>
+<span class="hl kwd">cat</span><span class="hl std">(</span><span class="hl str">&quot;Logistic Regression vs Decision Tree\n&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## Logistic Regression vs Decision Tree
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">cat</span><span class="hl std">(</span><span class="hl str">&quot;AUC for Logistic Regression: &quot;</span><span class="hl std">,</span> <span class="hl kwd">auc</span><span class="hl std">(roc_log),</span> <span class="hl str">&quot;\n&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## AUC for Logistic Regression:  0.9805496
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">cat</span><span class="hl std">(</span><span class="hl str">&quot;AUC for Decision Tree: &quot;</span><span class="hl std">,</span> <span class="hl kwd">auc</span><span class="hl std">(roc_tree),</span> <span class="hl str">&quot;\n&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## AUC for Decision Tree:  0.9878049
+</pre></div>
+</div></div>
+
+<p>You can also embed plots, for example:</p>
+
+<div class="chunk" id="unnamed-chunk-2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">plot</span><span class="hl std">(cars)</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-2-1.png" alt="plot of chunk unnamed-chunk-2" class="plot" /></div></div>
+
+</body>
+</html>
